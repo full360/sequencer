@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'sequencer'
+
+config_file = ARGV[0]
+
+r = Full360::Sequencer::Runner.new(config_file)
+r.run
