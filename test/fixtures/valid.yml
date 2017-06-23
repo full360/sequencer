@@ -1,0 +1,16 @@
+- chicken_butter: 
+    type: ecs_task
+    ignore_failure: false
+    active: true
+    parameters: 
+      cluster: yourcluster
+      task_definition: test-task-def:1
+      count: 1
+- turkey_fingers: 
+    type: ecs_task
+    ignore_failure: false
+    active: true
+    parameters: 
+      cluster: yourcluster2
+      task_definition: test-task-def:2
+      count: 1
