@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'full360-sequencer'
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
   s.date        = '2017-06-22'
   s.summary     = "full360 sequencer utility"
   s.description = "automation for simple batch jobs run in AWS"

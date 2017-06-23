@@ -30,7 +30,11 @@ begin
     r.sleep_between_checks = ENV['SEQUENCER_SLEEP_BETWEEN_CHECKS'].to_i if ENV['SEQUENCER_SLEEP_BETWEEN_CHECKS']
     r.run
   end
+  logger.info('all steps succeeded... exiting with code 0')
+  exit 0
 rescue => e
   logger.error(e.message)
   e.backtrace.each { |r| logger.error(r) }
+  logger.error('failure... exiting with code 1')
+  exit 1
 end
