@@ -90,13 +90,22 @@ module Full360
 
       def run_task
         @logger.info("starting ECS task #{@task_name}")
+        resp = ecs_run_task
+        @task_arn = resp.tasks[0].task_arn
+        @logger.info("#{@task_name} task created #{@task_arn} on cluster #{@cluster}")
+      end
+      
+      def ecs_run_task
         @logger.debug("creating AWS client for ECS task #{@task_name}...")
         @ecs_client = ::Aws::ECS::Client.new
         @logger.debug("running ECS task #{@task_name}...")
         @start_time = Time.new
         resp = @ecs_client.run_task(@params)
-        @task_arn = resp.tasks[0].task_arn
-        @logger.info("#{@task_name} task created #{@task_arn} on cluster #{@cluster}")
+        return resp
+      rescue => e
+        @logger.error("error creating ECS task...")
+        @logger.error("response from ECS: #{resp}")
+        raise e
       end
 
       def ecs_describe_tasks
