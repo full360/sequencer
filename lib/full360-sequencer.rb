@@ -42,6 +42,7 @@ module Full360
           raise "task failed error" unless this_task.success
         end
       rescue => e
+        @logger.error('SEQUENCER_ERROR')
         @logger.error(e.message)
         e.backtrace.each { |r| @logger.error(r) }
       end
@@ -103,6 +104,7 @@ module Full360
         resp = @ecs_client.run_task(@params)
         return resp
       rescue => e
+        @logger.error('SEQUENCER_ERROR')
         @logger.error("error creating ECS task...")
         @logger.error("response from ECS: #{resp}")
         raise e
@@ -129,6 +131,7 @@ module Full360
         end
         false
       rescue => e
+        @logger.error('SEQUENCER_ERROR')
         @logger.error(e.message)
         e.backtrace.each { |r| @logger.error(r) }
       end

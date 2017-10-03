@@ -22,6 +22,7 @@ begin
   logger.level = ENV['SEQUENCER_LOG_DEBUG'] ? Logger::DEBUG : Logger::INFO
 
   if config_file == nil
+    logger.error('SEQUENCER_ERROR')
     logger.error('YAML file not provided... exiting with error code 1')
     exit 1
   else
@@ -33,6 +34,7 @@ begin
   logger.info('all steps succeeded... exiting with code 0')
   exit 0
 rescue => e
+  logger.error('SEQUENCER_ERROR')
   logger.error(e.message)
   e.backtrace.each { |r| logger.error(r) }
   logger.error('failure... exiting with code 1')
