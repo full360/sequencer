@@ -45,6 +45,7 @@ module Full360
         @logger.error('SEQUENCER_ERROR')
         @logger.error(e.message)
         e.backtrace.each { |r| @logger.error(r) }
+        raise e
       end
       
       def task_name(params)
