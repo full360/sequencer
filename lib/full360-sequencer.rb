@@ -9,18 +9,18 @@ module Full360
     class Runner
       attr_accessor :sleep_between_checks
       attr_accessor :config
-      
+
       def initialize(logger = nil)
         @logger = logger ? logger : Logger.new(STDOUT)
 
         # default 5 seconds between completed? checks
         @sleep_between_checks = 5
       end
-      
+
       def config_from_file(yaml_path)
         @config = parse_config_file(yaml_path)
       end
-      
+
       def run_task_class(task_type_string)
         case task_type_string
         when 'ecs_task' then Full360::Sequencer::RunECSTask
@@ -47,25 +47,25 @@ module Full360
         e.backtrace.each { |r| @logger.error(r) }
         raise e
       end
-      
+
       def task_name(params)
         params.keys.first
       end
-      
+
       def parse_config_file(yaml_path)
         YAML.load_file(yaml_path)
       end
-      
+
       def config_valid?(config)
         return false unless config.is_a? Array
         true
       end
     end
-    
+
     class RunTaskBase
       attr_reader :success
       attr_reader :exit_code
-      
+
       def run_task; end
       def completed?; end
       def kill_task; end #will be used for timeout
@@ -79,7 +79,7 @@ module Full360
         @params = keys_to_symbol(@params)
         @cluster = @params[:cluster]
       end
-      
+
       def keys_to_symbol(params)
         # replaces string keys with symbol keys
         # required by AWS SDK
@@ -96,7 +96,7 @@ module Full360
         @task_arn = resp.tasks[0].task_arn
         @logger.info("#{@task_name} task created #{@task_arn} on cluster #{@cluster}")
       end
-      
+
       def ecs_run_task
         @logger.debug("creating AWS client for ECS task #{@task_name}...")
         @ecs_client = ::Aws::ECS::Client.new
@@ -119,8 +119,9 @@ module Full360
           }
         )
       end
-      
+
       def completed?
+        retries ||= 0
         resp = ecs_describe_tasks
         status = last_task_status(resp)
         @logger.info("#{@task_name} : #{@task_arn} current status: #{status}")
@@ -128,20 +129,24 @@ module Full360
           @logger.info("#{@task_name} completed in #{Time.new - @start_time} seconds")
           # parse exit_code(s) and return completion
           @success = determine_success(resp)
-          return true 
+          return true
         end
         false
       rescue => e
+        @logger.warn(e.message)
+        @logger.warn("task completion check failed, trying again ##{ retries }")
+        retry if (retries += 1) < 3
+
         @logger.error('SEQUENCER_ERROR')
         @logger.error(e.message)
         e.backtrace.each { |r| @logger.error(r) }
       end
-      
+
       # parses last status from aws API response
       def last_task_status(resp)
         resp.tasks[0].last_status
       end
-      
+
       # success is determined by all containers having zero exit code
       def determine_success(resp)
         success = true
