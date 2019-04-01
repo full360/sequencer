@@ -135,6 +135,7 @@ module Full360
       rescue => e
         @logger.warn(e.message)
         @logger.warn("task completion check failed, trying again ##{ retries }")
+        sleep 10*retries
         retry if (retries += 1) < 3
 
         @logger.error('SEQUENCER_ERROR')
