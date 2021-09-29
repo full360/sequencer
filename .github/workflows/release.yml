@@ -4,14 +4,15 @@ on:
   workflow_run:
     workflows: ["CI Test"]
     types: [completed]
-    branches:
-      - master
     tags:
       - v*
 
 jobs:
   release:
     runs-on: ubuntu-latest
+
+    if: github.event.base_ref == "refs/heads/master"
+
     steps:
       # Checkout code if release was created
       - uses: actions/checkout@v2
