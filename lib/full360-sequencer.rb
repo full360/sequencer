@@ -1,7 +1,7 @@
-require 'aws-sdk'
-require 'yaml'
-require 'logger'
-require 'pp'
+require "aws-sdk"
+require "yaml"
+require "logger"
+require "pp"
 
 module Full360
   module Sequencer
@@ -22,7 +22,7 @@ module Full360
 
       def run_task_class(task_type_string)
         case task_type_string
-        when 'ecs_task' then Full360::Sequencer::RunECSTask
+        when "ecs_task" then Full360::Sequencer::RunECSTask
         else nil
         end
       end
@@ -30,7 +30,7 @@ module Full360
       def run
         @config.each do |params|
           this_task_name = task_name(params)
-          this_task = run_task_class(params[this_task_name]['type']).new(
+          this_task = run_task_class(params[this_task_name]["type"]).new(
             this_task_name,
             params[this_task_name]
           )
@@ -41,7 +41,7 @@ module Full360
           raise "task failed error" unless this_task.success
         end
       rescue => e
-        @logger.error('SEQUENCER_ERROR')
+        @logger.error("SEQUENCER_ERROR")
         @logger.error(e.message)
         e.backtrace.each { |r| @logger.error(r) }
         raise e
@@ -74,7 +74,7 @@ module Full360
       def initialize(task_name, params, logger = nil)
         @logger = logger ? logger : Logger.new(STDOUT)
         @task_name = task_name
-        @params = params['parameters']
+        @params = params["parameters"]
         @params = keys_to_symbol(@params)
         @cluster = @params[:cluster]
       end
@@ -104,7 +104,7 @@ module Full360
         resp = @ecs_client.run_task(@params)
         return resp
       rescue => e
-        @logger.error('SEQUENCER_ERROR')
+        @logger.error("SEQUENCER_ERROR")
         @logger.error("error creating ECS task...")
         @logger.error("response from ECS: #{resp}")
         raise e
@@ -124,7 +124,7 @@ module Full360
         resp = ecs_describe_tasks
         status = last_task_status(resp)
         @logger.info("#{@task_name} : #{@task_arn} current status: #{status}")
-        if status == 'STOPPED'
+        if status == "STOPPED"
           @logger.info("#{@task_name} completed in #{Time.new - @start_time} seconds")
           # parse exit_code(s) and return completion
           @success = determine_success(resp)
@@ -137,7 +137,7 @@ module Full360
         sleep 10*retries
         retry if (retries += 1) < 3
 
-        @logger.error('SEQUENCER_ERROR')
+        @logger.error("SEQUENCER_ERROR")
         @logger.error(e.message)
         e.backtrace.each { |r| @logger.error(r) }
       end
