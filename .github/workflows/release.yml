@@ -4,7 +4,6 @@ on:
   workflow_run:
     workflows: ["CI Test"]
     types: [completed]
-  push:
     branches:
       - master
     tags:
@@ -14,13 +13,6 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: GoogleCloudPlatform/release-please-action@v2
-        id: release
-        with:
-          release-type: ruby
-          package-name: full360-sequencer
-          version-file: "lib/full360_sequencer/version.rb"
-
       # Checkout code if release was created
       - uses: actions/checkout@v2
         if: ${{ steps.release.outputs.release_created }}
