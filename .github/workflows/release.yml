@@ -7,7 +7,7 @@ on:
     branches:
       - master
     tags:
-      - v**
+      - v*
 
 jobs:
   release:
@@ -15,14 +15,12 @@ jobs:
     steps:
       # Checkout code if release was created
       - uses: actions/checkout@v2
-        if: ${{ steps.release.outputs.release_created }}
 
       # Setup ruby if a release was created
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 2.7
           bundler-cache: true
-        if: ${{ steps.release.outputs.release_created }}
 
       # Publish
       - name: publish gem
@@ -35,4 +33,3 @@ jobs:
           gem push *.gem
         env:
           RUBYGEMS_API_KEY: "${{secrets.RUBYGEMS_API_KEY}}"
-        if: ${{ steps.release.outputs.release_created }}
