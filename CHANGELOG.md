@@ -10,8 +10,19 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 ### Removed
 
+## 0.1.0
+### Added
+- Working GitHub Actions workflow for tests and releases.
+- Add Gemfile to the Gem.
+### Changed
+- Update the .gemspec file and dependencies.
+- Update the gem file format.
+- Change from single quote to double quotes.
+- Fix deprecation warnings in tests
+### Removed
+
 ## 0.0.7
 ### Added
-- Working version
+- Working version.
 ### Changed
 ### Removed
