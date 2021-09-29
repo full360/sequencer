@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
   # Make it Ruby 2+ only
   spec.required_ruby_version = ">= 2.0"
 
-  spec.add_runtime_dependency "logger", "~> 1.2"
   spec.add_runtime_dependency "aws-sdk", "~> 2.9"
 
   # development dependencies

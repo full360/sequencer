@@ -3,7 +3,6 @@ PATH
   specs:
     full360-sequencer (0.0.7)
       aws-sdk (~> 2.9)
-      logger (~> 1.2)
 
 GEM
   remote: https://rubygems.org/
@@ -19,7 +18,6 @@ GEM
     aws-sigv4 (1.4.0)
       aws-eventstream (~> 1, >= 1.0.2)
     jmespath (1.4.0)
-    logger (1.4.3)
     minitest (5.14.4)
     rake (12.3.3)
 
