@@ -92,6 +92,6 @@ Releasing a new version of the Gem requires a few steps:
 - Commit all the changes
   - Example: `git commit -m "Bump gem to version 1.0.0"`
 - Create a Git tag that matches the version number in `version.rb`
-  - Example: `git tag -m "Version 1.0.0" 1.0.0`
+  - Example: `git tag -m "Version 1.0.0" v1.0.0`
 
 [ref]: http://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_RunTask.html
