@@ -10,6 +10,12 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 ### Removed
 
+## 0.1.1
+### Added
+- Workflows dependable.
+### Changed
+### Removed
+
 ## 0.1.0
 ### Added
 - Working GitHub Actions workflow for tests and releases.
