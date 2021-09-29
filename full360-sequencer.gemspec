@@ -30,4 +30,5 @@ Gem::Specification.new do |spec|
   # development dependencies
   spec.add_development_dependency "minitest", "~> 5.9"
   spec.add_development_dependency "rake", "~> 12"
+  spec.add_development_dependency "pry", "~> 0.14"
 end
