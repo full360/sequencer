@@ -1,4 +1,3 @@
-#!/usr/bin/ruby
 require 'aws-sdk'
 require 'yaml'
 require 'logger'
