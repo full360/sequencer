@@ -1,5 +1,7 @@
-task :default => :test
+require "bundler/gem_tasks"
 
 task :test do
-  Dir.glob('./test/*_test.rb').each { |file| require file}
+  Dir["./test/*_test.rb"].each { |file| require file}
 end
+
+task default: %w(test)

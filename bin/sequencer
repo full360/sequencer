@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'full360-sequencer'
+require "full360-sequencer"
 
 config_file = ARGV[0]
 
@@ -14,29 +14,29 @@ def logger
 end
 
 def sequencer_version
-  Gem.loaded_specs['full360-sequencer'].version
+  Gem.loaded_specs["full360-sequencer"].version
 end
 
 begin
   logger.info("sequencer version #{sequencer_version}")
-  logger.level = ENV['SEQUENCER_LOG_DEBUG'] ? Logger::DEBUG : Logger::INFO
+  logger.level = ENV["SEQUENCER_LOG_DEBUG"] ? Logger::DEBUG : Logger::INFO
 
   if config_file == nil
-    logger.error('SEQUENCER_ERROR')
-    logger.error('YAML file not provided... exiting with error code 1')
+    logger.error("SEQUENCER_ERROR")
+    logger.error("YAML file not provided... exiting with error code 1")
     exit 1
   else
     r = Full360::Sequencer::Runner.new(logger)
     r.config_from_file(config_file)
-    r.sleep_between_checks = ENV['SEQUENCER_SLEEP_BETWEEN_CHECKS'].to_i if ENV['SEQUENCER_SLEEP_BETWEEN_CHECKS']
+    r.sleep_between_checks = ENV["SEQUENCER_SLEEP_BETWEEN_CHECKS"].to_i if ENV["SEQUENCER_SLEEP_BETWEEN_CHECKS"]
     r.run
   end
-  logger.info('all steps succeeded... exiting with code 0')
+  logger.info("all steps succeeded... exiting with code 0")
   exit 0
 rescue => e
-  logger.error('SEQUENCER_ERROR')
+  logger.error("SEQUENCER_ERROR")
   logger.error(e.message)
   e.backtrace.each { |r| logger.error(r) }
-  logger.error('failure... exiting with code 1')
+  logger.error("failure... exiting with code 1")
   exit 1
 end
