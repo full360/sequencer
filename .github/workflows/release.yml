@@ -1,11 +1,14 @@
 name: Release Gem
 
 on:
+  workflow_run:
+    workflows: ["CI Test"]
+    types: [completed]
   push:
     branches:
       - master
     tags:
-      - v*
+      - v**
 
 jobs:
   release:
