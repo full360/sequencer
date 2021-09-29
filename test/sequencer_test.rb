@@ -1,5 +1,4 @@
-gem 'minitest'
-require 'minitest/autorun'
+require "minitest/autorun"
 
 # using a global variable because this is only a test
 $base_path = File.expand_path("#{File.dirname(__FILE__)}/../")
@@ -35,12 +34,12 @@ class TestSequencerRunner < Minitest::Test
 
     assert_equal(
       Full360::Sequencer::RunECSTask,
-      f.run_task_class('ecs_task')
+      f.run_task_class("ecs_task")
     )
 
-    assert_equal(
+    assert_nil(
       nil,
-      f.run_task_class('bad_info')
+      f.run_task_class("bad_info")
     )
   end
 
@@ -48,8 +47,8 @@ class TestSequencerRunner < Minitest::Test
     f = create_runner
 
     assert_equal(
-      'chicken',
-      f.task_name({'chicken' => 2, 'turkey' => 3})
+      "chicken",
+      f.task_name({"chicken" => 2, "turkey" => 3})
     )
   end
 
@@ -89,14 +88,14 @@ end
 class TestRunECSTask < Minitest::Test
   def test_keys_to_symbol
     t = Full360::Sequencer::RunECSTask.new(
-      'test-task',
-      {'parameters' => {}}
+      "test-task",
+      {"parameters" => {}}
     )
 
     assert_equal(
       {a: 1, b: 2},
       t.keys_to_symbol(
-        {'a' => 1, 'b' => 2}
+        {"a" => 1, "b" => 2}
       )
     )
   end
