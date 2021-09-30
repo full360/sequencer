@@ -7,7 +7,7 @@ $base_path = File.expand_path("#{File.dirname(__FILE__)}/../")
 
 class TestSequencerRunner < Minitest::Test
   def create_runner
-    Full360::Sequencer::Runner.new
+    Full360::Sequencer::Runner.new(5)
   end
 
   def valid_yml_as_object
