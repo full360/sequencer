@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require "logger"
 require "full360-sequencer"
 
 config_file = ARGV[0]

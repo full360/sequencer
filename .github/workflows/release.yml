@@ -34,3 +34,71 @@ jobs:
           gem push *.gem
         env:
           RUBYGEMS_API_KEY: "${{secrets.RUBYGEMS_API_KEY}}"
+
+  docker-jruby:
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Extract tag name
+        id: tag
+        uses: actions/github-script@0.2.0
+        with:
+          script: |
+            return context.payload.ref.replace(/\/refs\/tags\//, '');
+
+      - name: Build JRuby image
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.jruby
+          pull: true
+          push: true
+          tags: |
+            full360/sequencer:jruby-latest
+            full360/sequencer:${{ steps.tag.outputs.result }}-jruby-latest
+
+  docker-ruby:
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_TOKEN }}
+
+      - name: Extract tag name
+        id: tag
+        uses: actions/github-script@0.2.0
+        with:
+          script: |
+            return context.payload.ref.replace(/\/refs\/tags\//, '');
+
+      - name: Build Ruby image
+        uses: docker/build-push-action@v2
+        with:
+          file: ./Dockerfile.ruby
+          pull: true
+          push: true
+          tags: |
+            full360/sequencer:ruby-latest
+            full360/sequencer:${{ steps.tag.outputs.result }}-ruby-latest

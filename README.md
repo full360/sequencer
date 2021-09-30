@@ -94,4 +94,11 @@ Releasing a new version of the Gem requires a few steps:
 - Create a Git tag that matches the version number in `version.rb`
   - Example: `git tag -m "Version 1.0.0" v1.0.0`
 
+## Running the Sequencer from Docker
+
+Pass the following environment variables to the container at runtime:
+
+* `SEQUENCER_YAML_S3_PATH` - s3:// path to the yaml configuration file.
+* `AWS_REGION` - AWS region in which you are running the container.
+
 [ref]: http://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_RunTask.html
