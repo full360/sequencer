@@ -20,30 +20,30 @@ module Full360
       end
 
       def run_task
-        logger.info("starting ECS task #{@task_name}")
+        logger.info("starting ECS task #{task_name}")
 
         resp = ecs_run_task
         @task_arn = resp.tasks.first.task_arn
 
-        logger.info("#{task_name} task created #{@task_arn} on cluster #{cluster}")
+        logger.info("#{task_name} task created #{task_arn} on cluster #{cluster}")
       end
 
       def ecs_run_task
-        logger.debug("running ECS task #{@task_name}...")
+        logger.debug("running ECS task #{task_name}...")
         @start_time = Time.new.utc
 
-        resp = @ecs_client.run_task(@params)
+        resp = ecs_client.run_task(params)
         resp
       rescue => e
-        logger.error("SEQUENCER_ERROR: response from ECS: #{resp}")
+        logger.error("SEQUENCER_ERROR: response from ECS #{resp}")
         raise e
       end
 
       def ecs_describe_tasks
-        @ecs_client.describe_tasks(
+        ecs_client.describe_tasks(
           {
-            cluster: @cluster,
-            tasks: [@task_arn] # required
+            cluster: cluster,
+            tasks: [task_arn],
           }
         )
       end
@@ -54,12 +54,12 @@ module Full360
         resp = ecs_describe_tasks
         status = last_task_status(resp)
 
-        logger.info("#{@task_name} : #{@task_arn} current status: #{status}")
+        logger.info("#{task_name}: #{task_arn} current status: #{status}")
 
         response = false
 
         if status == "STOPPED"
-          logger.info("#{@task_name} completed in #{Time.new - @start_time} seconds")
+          logger.info("#{task_name} completed in #{Time.new.utc - start_time} seconds")
           # parse exit_code(s) and return completion
           @success = determine_success(resp)
           response = true
@@ -75,7 +75,7 @@ module Full360
         retry if (retries += 1) < 3
 
         logger.error("SEQUENCER_ERROR: #{e.message}")
-        e.backtrace.each { |r| @logger.error(r) }
+        e.backtrace.each { |r| logger.error(r) }
       end
 
       # parses last status from aws API response
