@@ -4,22 +4,19 @@ require "logger"
 module Full360
   module Sequencer
     class RunECSTask < RunTaskBase
-      def initialize(task_name, params, logger = nil)
-        @logger = logger ? logger : Logger.new(STDOUT)
-        @task_name = task_name
-        @params = params["parameters"]
-        @params = keys_to_symbol(@params)
-        @cluster = @params[:cluster]
-      end
+      attr_accessor :task_name
+      attr_accessor :params
+      attr_accessor :ecs_client
+      attr_accessor :logger
 
-      def keys_to_symbol(params)
-        # replaces string keys with symbol keys
-        # required by AWS SDK
-        if params.is_a?(Hash)
-          params.inject({}){ |memo,(k,v)| memo[k.to_sym] = v; memo }
-        else
-          nil
-        end
+      attr_reader :cluster
+
+      def initialize(task_name, params, ecs_client = nil, logger = nil)
+        @logger     = logger ? logger : Logger.new(STDOUT)
+        @ecs_client = ecs_client ||= Aws::ECS::Client.new
+        @task_name  = task_name
+        @params     = keys_to_symbol(params["parameters"])
+        @cluster    = @params[:cluster]
       end
 
       def run_task
@@ -91,6 +88,17 @@ module Full360
           end
         end
         success
+      end
+
+      private
+
+      # Replaces string keys with symbol keys. Required by AWS SDK.
+      def keys_to_symbol(params)
+        if params.is_a?(Hash)
+          params.inject({}) { |memo,(k,v)| memo[k.to_sym] = v; memo }
+        else
+          nil
+        end
       end
     end
   end
