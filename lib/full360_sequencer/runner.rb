@@ -1,5 +1,6 @@
 require "yaml"
 require "logger"
+require "full360_sequencer/run_ecs_task"
 
 module Full360
   module Sequencer
