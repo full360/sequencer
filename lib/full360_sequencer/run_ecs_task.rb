@@ -12,7 +12,7 @@ module Full360
       attr_reader :cluster
 
       def initialize(task_name, params, ecs_client = nil, logger = nil)
-        @logger     = logger ? logger : Logger.new(STDOUT)
+        @logger     = logger ||= Logger.new(STDOUT)
         @ecs_client = ecs_client ||= Aws::ECS::Client.new
         @task_name  = task_name
         @params     = params[:parameters]
@@ -56,19 +56,19 @@ module Full360
 
         logger.info("#{task_name}: #{task_arn} current status: #{status}")
 
-        response = false
+        completed = false
 
         if status == "STOPPED"
           logger.info("#{task_name} completed in #{Time.new.utc - start_time} seconds")
           # parse exit_code(s) and return completion
           @success = determine_success(resp)
-          response = true
+          completed = true
         end
 
-        response
+        completed
       rescue => e
         logger.warn(e.message)
-        logger.warn("task completion check failed, trying again ##{ retries }")
+        logger.warn("task completion check failed, trying again ##{retries}")
 
         sleep 10*retries
 
@@ -80,7 +80,7 @@ module Full360
 
       # parses last status from aws API response
       def last_task_status(resp)
-        resp.tasks[0].last_status
+        resp.tasks.first.last_status
       end
 
       # success is determined by all containers having zero exit code
