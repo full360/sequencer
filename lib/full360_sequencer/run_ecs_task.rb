@@ -1,5 +1,5 @@
-require "aws-sdk"
 require "logger"
+require "aws-sdk-ecs"
 
 module Full360
   module Sequencer
