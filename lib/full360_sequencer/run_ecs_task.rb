@@ -10,6 +10,8 @@ module Full360
       attr_accessor :logger
 
       attr_reader :cluster
+      attr_reader :task_arn
+      attr_reader :start_time
 
       def initialize(task_name, params, ecs_client = nil, logger = nil)
         @logger     = logger ||= Logger.new(STDOUT)
