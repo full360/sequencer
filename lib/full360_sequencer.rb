@@ -1,3 +1,5 @@
+require "logger"
+
 # Autoload all gem classes
 module Full360
   module Sequencer
