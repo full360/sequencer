@@ -20,23 +20,22 @@ module Full360
       end
 
       def run_task
-        @logger.info("starting ECS task #{@task_name}")
+        logger.info("starting ECS task #{@task_name}")
+
         resp = ecs_run_task
-        @task_arn = resp.tasks[0].task_arn
-        @logger.info("#{@task_name} task created #{@task_arn} on cluster #{@cluster}")
+        @task_arn = resp.tasks.first.task_arn
+
+        logger.info("#{task_name} task created #{@task_arn} on cluster #{cluster}")
       end
 
       def ecs_run_task
-        @logger.debug("creating AWS client for ECS task #{@task_name}...")
-        @ecs_client = ::Aws::ECS::Client.new
-        @logger.debug("running ECS task #{@task_name}...")
-        @start_time = Time.new
+        logger.debug("running ECS task #{@task_name}...")
+        @start_time = Time.new.utc
+
         resp = @ecs_client.run_task(@params)
-        return resp
+        resp
       rescue => e
-        @logger.error("SEQUENCER_ERROR")
-        @logger.error("error creating ECS task...")
-        @logger.error("response from ECS: #{resp}")
+        logger.error("SEQUENCER_ERROR: response from ECS: #{resp}")
         raise e
       end
 
@@ -51,24 +50,31 @@ module Full360
 
       def completed?
         retries ||= 0
+
         resp = ecs_describe_tasks
         status = last_task_status(resp)
-        @logger.info("#{@task_name} : #{@task_arn} current status: #{status}")
+
+        logger.info("#{@task_name} : #{@task_arn} current status: #{status}")
+
+        response = false
+
         if status == "STOPPED"
-          @logger.info("#{@task_name} completed in #{Time.new - @start_time} seconds")
+          logger.info("#{@task_name} completed in #{Time.new - @start_time} seconds")
           # parse exit_code(s) and return completion
           @success = determine_success(resp)
-          return true
+          response = true
         end
-        false
+
+        response
       rescue => e
-        @logger.warn(e.message)
-        @logger.warn("task completion check failed, trying again ##{ retries }")
+        logger.warn(e.message)
+        logger.warn("task completion check failed, trying again ##{ retries }")
+
         sleep 10*retries
+
         retry if (retries += 1) < 3
 
-        @logger.error("SEQUENCER_ERROR")
-        @logger.error(e.message)
+        logger.error("SEQUENCER_ERROR: #{e.message}")
         e.backtrace.each { |r| @logger.error(r) }
       end
 
@@ -81,7 +87,7 @@ module Full360
       def determine_success(resp)
         success = true
         resp.tasks[0].containers.each do |c|
-          @logger.info("#{@task_name} : container #{c.name} #{c.container_arn} completed with exit_code #{c.exit_code}")
+          logger.info("#{@task_name} : container #{c.name} #{c.container_arn} completed with exit_code #{c.exit_code}")
           if c.exit_code != 0
             # we had a problem!
             success = false
