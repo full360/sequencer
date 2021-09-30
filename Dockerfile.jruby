@@ -1,0 +1,23 @@
+FROM jruby:9.2-jre8
+
+# Should be more than sufficient for transforms without large recordset
+# operations.
+ENV JRUBY_OPTS=-J-Xmx1024m
+
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends \
+  unzip \
+  ca-certificates \
+  awscli \
+  && update-ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+
+#set time zone
+RUN mv /etc/localtime /etc/localtime.bak ; ln -s /usr/share/zoneinfo/UTC /etc/localtime
+
+RUN gem install full360-sequencer
+
+# this is the entry point
+ADD entrypoint.sh /usr/sbin/runner.sh
+RUN chmod 755 /usr/sbin/runner.sh
+ENTRYPOINT ["/usr/sbin/runner.sh"]
