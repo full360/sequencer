@@ -14,3 +14,4 @@
       cluster: yourcluster2
       task_definition: test-task-def:2
       count: 1
+      launch_type: "FARGATE"
