@@ -32,7 +32,8 @@ module Full360
       def run
         @config.each do |params|
           this_task_name = task_name(params)
-          this_task = run_task_class(params[this_task_name]["type"]).new(
+
+          this_task = run_task_class(params[this_task_name][:type]).new(
             this_task_name,
             params[this_task_name]
           )
