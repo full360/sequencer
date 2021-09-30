@@ -24,8 +24,10 @@ module Full360
 
       def run_task_class(task_type_string)
         case task_type_string
-        when "ecs_task" then Full360::Sequencer::RunECSTask
-        else nil
+        when "ecs_task"
+          Full360::Sequencer::RunECSTask
+        else
+          nil
         end
       end
 
