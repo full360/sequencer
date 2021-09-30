@@ -15,8 +15,8 @@ module Full360
         @logger     = logger ? logger : Logger.new(STDOUT)
         @ecs_client = ecs_client ||= Aws::ECS::Client.new
         @task_name  = task_name
-        @params     = keys_to_symbol(params["parameters"])
-        @cluster    = @params[:cluster]
+        @params     = params[:parameters]
+        @cluster    = self.params[:cluster]
       end
 
       def run_task
@@ -86,25 +86,15 @@ module Full360
       # success is determined by all containers having zero exit code
       def determine_success(resp)
         success = true
-        resp.tasks[0].containers.each do |c|
-          logger.info("#{@task_name} : container #{c.name} #{c.container_arn} completed with exit_code #{c.exit_code}")
-          if c.exit_code != 0
-            # we had a problem!
-            success = false
-          end
+
+        resp.tasks.first.containers.each do |c|
+          logger.info("#{task_name}: container #{c.name} #{c.container_arn} completed with exit_code #{c.exit_code}")
+
+          # we had a problem!
+          success = false if c.exit_code != 0
         end
+
         success
-      end
-
-      private
-
-      # Replaces string keys with symbol keys. Required by AWS SDK.
-      def keys_to_symbol(params)
-        if params.is_a?(Hash)
-          params.inject({}) { |memo,(k,v)| memo[k.to_sym] = v; memo }
-        else
-          nil
-        end
       end
     end
   end
