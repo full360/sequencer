@@ -49,13 +49,19 @@ module Full360
         params.keys.first
       end
 
-      def parse_config_file(yaml_path)
-        YAML.load_file(yaml_path)
-      end
-
       def config_valid?(config)
         return false unless config.is_a? Array
         true
+      end
+
+      private
+
+      # parse_config_file reads and parses the configuration file and returns
+      # an array of hashes with symbolize keys ready to consume.
+      # @params yaml_path [String]
+      # @return [Array]
+      def parse_config_file(yaml_path)
+        YAML.safe_load(File.read(yaml_path), symbolize_names: true)
       end
     end
   end
