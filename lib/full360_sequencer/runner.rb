@@ -30,23 +30,26 @@ module Full360
       end
 
       def run
-        @config.each do |params|
+        config.each do |params|
           this_task_name = task_name(params)
 
           this_task = run_task_class(params[this_task_name][:type]).new(
             this_task_name,
             params[this_task_name]
           )
+
           this_task.run_task
+
           until this_task.completed?
-            sleep @sleep_between_checks
+            sleep sleep_between_checks
           end
+
           raise "task failed error" unless this_task.success
         end
       rescue => e
-        @logger.error("SEQUENCER_ERROR")
-        @logger.error(e.message)
-        e.backtrace.each { |r| @logger.error(r) }
+        logger.error("SEQUENCER_ERROR: #{e.message}")
+
+        e.backtrace.each { |r| logger.error(r) }
         raise e
       end
 
