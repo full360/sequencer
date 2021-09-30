@@ -5,13 +5,17 @@ module Full360
   module Sequencer
     class Runner
       attr_accessor :sleep_between_checks
-      attr_accessor :config
+      attr_accessor :logger
 
-      def initialize(logger = nil)
-        @logger = logger ? logger : Logger.new(STDOUT)
+      attr_reader :config
 
-        # default 5 seconds between completed? checks
-        @sleep_between_checks = 5
+      # Initializes the class
+      # @params sleep_between_checks [Int]
+      # @params logger [Logger]
+      # @return [Full360::Sequencer::Runner]
+      def initialize(sleep_between_checks, logger = nil)
+        @sleep_between_checks = sleep_between_checks
+        @logger               = logger ||= Logger.new(STDOUT)
       end
 
       def config_from_file(yaml_path)
