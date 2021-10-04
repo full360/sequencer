@@ -50,9 +50,7 @@ jobs:
 
       - name: Extract tag name
         id: tag
-        uses: actions/github-script@0.2.0
-        with:
-          script: return context.payload.ref.replace(/\/refs\/tags\//, '')
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
       - name: Build JRuby image
         uses: docker/build-push-action@v2
@@ -62,7 +60,7 @@ jobs:
           push: true
           tags: |
             full360/sequencer:jruby-latest
-            full360/sequencer:${{ steps.tag.outputs.result }}-jruby-latest
+            full360/sequencer:${{ steps.tag.outputs.VERSION }}-jruby-latest
 
   docker-ruby:
     runs-on: ubuntu-latest
@@ -83,9 +81,7 @@ jobs:
 
       - name: Extract tag name
         id: tag
-        uses: actions/github-script@0.2.0
-        with:
-          script: return context.payload.ref.replace(/\/refs\/tags\//, '')
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
 
       - name: Build Ruby image
         uses: docker/build-push-action@v2
@@ -95,4 +91,4 @@ jobs:
           push: true
           tags: |
             full360/sequencer:ruby-latest
-            full360/sequencer:${{ steps.tag.outputs.result }}-ruby-latest
+            full360/sequencer:${{ steps.tag.outputs.VERSION }}-ruby-latest
