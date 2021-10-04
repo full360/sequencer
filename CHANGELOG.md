@@ -10,6 +10,12 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 ### Removed
 
+## 0.2.6
+### Added
+### Changed
+### Removed
+- Remove the `github-script` action.
+
 ## 0.2.5
 ### Added
 ### Changed

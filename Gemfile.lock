@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    full360-sequencer (0.2.5)
+    full360-sequencer (0.2.6)
       aws-sdk-ecs (~> 1.85)
 
 GEM
