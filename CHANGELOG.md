@@ -10,6 +10,12 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 ### Removed
 
+## 0.2.7
+### Added
+### Changed
+- Normalize the Docker image tags to `latest-jruby/ruby` and `vX.X.X-jruby/ruby`
+### Removed
+
 ## 0.2.6
 ### Added
 ### Changed
