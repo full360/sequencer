@@ -59,8 +59,8 @@ jobs:
           pull: true
           push: true
           tags: |
-            full360/sequencer:jruby-latest
-            full360/sequencer:${{ steps.tag.outputs.VERSION }}-jruby-latest
+            full360/sequencer:latest-jruby
+            full360/sequencer:${{ steps.tag.outputs.VERSION }}-jruby
 
   docker-ruby:
     runs-on: ubuntu-latest
@@ -90,5 +90,5 @@ jobs:
           pull: true
           push: true
           tags: |
-            full360/sequencer:ruby-latest
-            full360/sequencer:${{ steps.tag.outputs.VERSION }}-ruby-latest
+            full360/sequencer:latest-jruby
+            full360/sequencer:${{ steps.tag.outputs.VERSION }}-ruby
