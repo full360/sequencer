@@ -10,6 +10,12 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 ### Removed
 
+## 0.2.5
+### Added
+### Changed
+- Multiple workflow changese to make it work.
+### Removed
+
 ## 0.2.0
 ### Added
 - Add Docker image for Ruby and JRuby that will get triggered after the release.
