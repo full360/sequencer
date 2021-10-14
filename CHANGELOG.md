@@ -10,6 +10,15 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 ### Removed
 
+## 0.3.0
+### Added
+- AWS SDK for S3 as a dependency.
+### Changed
+- Downloading the sequencer file is now done using Ruby.
+- Reading the YAML file is not required anymore by the process.
+### Removed
+- Remove the aws-cli as a dependency of the Docker image.
+
 ## 0.2.8
 ### Added
 ### Changed

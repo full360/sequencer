@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    full360-sequencer (0.2.8)
+    full360-sequencer (0.3.0)
       aws-sdk-ecs (~> 1.85)
       aws-sdk-s3 (~> 1.103)
 
