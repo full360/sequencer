@@ -1,4 +1,5 @@
 require "logger"
+require "aws-sdk-s3"
 
 # Autoload all gem classes
 module Full360
