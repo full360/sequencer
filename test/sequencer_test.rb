@@ -68,7 +68,7 @@ class TestSequencerRunner < Minitest::Test
 
     assert_equal(
       valid_yml_as_object,
-      f.config_from_file("#{$base_path}/test/fixtures/valid.yml")
+      f.config_from_file(File.read("#{$base_path}/test/fixtures/valid.yml"))
     )
   end
 
@@ -89,7 +89,7 @@ class TestSequencerRunner < Minitest::Test
   def test_config_from_file
     f = create_runner
 
-    f.config_from_file("#{$base_path}/test/fixtures/valid.yml")
+    f.config_from_file(File.read("#{$base_path}/test/fixtures/valid.yml"))
     assert_equal(
       valid_yml_as_object,
       f.config

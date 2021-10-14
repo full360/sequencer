@@ -72,7 +72,7 @@ module Full360
       # @params yaml_path [String]
       # @return [Array]
       def parse_config_file(yaml_path)
-        YAML.safe_load(File.read(yaml_path), symbolize_names: true)
+        YAML.safe_load(yaml_path, symbolize_names: true)
       end
     end
   end
