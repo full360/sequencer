@@ -19,6 +19,15 @@ def sequencer_version
 end
 
 begin
+  region = ENV.fetch("AWS_REGION", "us-east-1")
+  s3_str = ENV.fetch("SEQUENCER_YAML_S3_PATH", "s3://dummy/prefix")
+  
+  # Will split the path into two groups one for the bucket and one for the
+  # prefix and we will use this later on when we download the file.
+  matches = /^s3:\/\/(?<bucket>.*)\/(?<prefix>.*)$/.match(s3_str)
+
+  s3_client = Aws::S3::Client.new(region: region)
+
   logger.info("sequencer version #{sequencer_version}")
   logger.level = ENV["SEQUENCER_LOG_DEBUG"] ? Logger::DEBUG : Logger::INFO
 
@@ -28,8 +37,13 @@ begin
   else
     sleep_between_checks = ENV.fetch("SEQUENCER_SLEEP_BETWEEN_CHECKS", 5).to_i
 
+    logger.info("downloading from S3: #{matches["bucket"]}/#{matches["prefix"]}")
+    resp = s3_client.get_object(bucket: matches["bucket"], key: matches["prefix"])
+
+    logger.info("file last modified on: #{resp.last_modified}")
+
     Full360::Sequencer::Runner.new(sleep_between_checks, logger).tap do |runner|
-      runner.config_from_file(config_file)
+      runner.config_from_file(resp.body.read)
       runner.run
     end
   end
