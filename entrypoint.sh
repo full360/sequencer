@@ -2,9 +2,9 @@
 
 if [ -n "$AWS_REGION" ]
 then
-  aws s3 cp $SEQUENCER_YAML_S3_PATH /sequencer/file.yml --region $AWS_REGION
+  aws s3 cp $SEQUENCER_YAML_S3_PATH sequencer.yml --region $AWS_REGION
 else
-  aws s3 cp $SEQUENCER_YAML_S3_PATH /sequencer/file.yml
+  aws s3 cp $SEQUENCER_YAML_S3_PATH sequencer.yml
 fi
 
-sequencer /sequencer/file.yml
+sequencer sequencer.yml
