@@ -90,5 +90,5 @@ jobs:
           pull: true
           push: true
           tags: |
-            full360/sequencer:latest-jruby
+            full360/sequencer:latest-ruby
             full360/sequencer:${{ steps.tag.outputs.VERSION }}-ruby
