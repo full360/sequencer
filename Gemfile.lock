@@ -3,6 +3,7 @@ PATH
   specs:
     full360-sequencer (0.2.8)
       aws-sdk-ecs (~> 1.85)
+      aws-sdk-s3 (~> 1.103)
 
 GEM
   remote: https://rubygems.org/
@@ -17,6 +18,13 @@ GEM
     aws-sdk-ecs (1.86.0)
       aws-sdk-core (~> 3, >= 3.120.0)
       aws-sigv4 (~> 1.1)
+    aws-sdk-kms (1.49.0)
+      aws-sdk-core (~> 3, >= 3.120.0)
+      aws-sigv4 (~> 1.1)
+    aws-sdk-s3 (1.103.0)
+      aws-sdk-core (~> 3, >= 3.120.0)
+      aws-sdk-kms (~> 1)
+      aws-sigv4 (~> 1.4)
     aws-sigv4 (1.4.0)
       aws-eventstream (~> 1, >= 1.0.2)
     coderay (1.1.3)
