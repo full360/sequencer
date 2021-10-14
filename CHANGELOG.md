@@ -10,6 +10,12 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 ### Removed
 
+## 0.2.8
+### Added
+### Changed
+- Rename the sequencer file in entrypoint to `sequencer.yml`
+### Removed
+
 ## 0.2.7
 ### Added
 ### Changed
