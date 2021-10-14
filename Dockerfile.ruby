@@ -5,10 +5,7 @@ RUN apk add --no-cache \
   unzip \
   ca-certificates \
   bash \
-  wget \
-  curl \
-  aws-cli \
-  && update-ca-certificates \
+  && update-ca-certificates
 
 #set time zone
 RUN mv /etc/localtime /etc/localtime.bak ; ln -s /usr/share/zoneinfo/UTC /etc/localtime
