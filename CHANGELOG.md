@@ -10,6 +10,12 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Changed
 ### Removed
 
+## 0.3.1
+### Added
+### Changed
+- Make the S3 URL matcher work with all types of prefixes.
+### Removed
+
 ## 0.3.0
 ### Added
 - AWS SDK for S3 as a dependency.
