@@ -14,6 +14,7 @@ Versioning](http://semver.org/spec/v2.0.0.html).
 ### Added
 ### Changed
 - Make the S3 URL matcher work with all types of prefixes.
+- Fix the override for the Ruby Docker image latest tag.
 ### Removed
 
 ## 0.3.0
