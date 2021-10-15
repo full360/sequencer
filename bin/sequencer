@@ -24,7 +24,7 @@ begin
   
   # Will split the path into two groups one for the bucket and one for the
   # prefix and we will use this later on when we download the file.
-  matches = /^s3:\/\/(?<bucket>.*)\/(?<prefix>.*)$/.match(s3_str)
+  matches = /\As3:\/\/(?<bucket>.+?)\/(?<prefix>.+)\z/.match(s3_str)
 
   s3_client = Aws::S3::Client.new(region: region)
 
